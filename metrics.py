@@ -42,6 +42,32 @@ class MeanMetric(Metric):
         self.count = 0
 
 
+class Accuracy(Metric):
+    def __init__(self, name="acc"):
+        super().__init__(name=name)
+        self.count = 0
+        self.correct = 0
+
+    @torch.inference_mode()
+    def update_state(self, y_true, y_pred):
+        y_true = torch.flatten(y_true)
+
+        y_pred = y_pred.argmax(-1)
+        y_pred = torch.flatten(y_pred)
+
+        self.count += y_true.size(0)
+        self.correct += (y_pred == y_true).sum().cpu().item()
+
+    def result(self):
+        if self.count == 0:
+            return 0
+        return self.correct / self.count
+
+    def reset(self):
+        self.count = 0
+        self.correct = 0
+
+
 class BinaryAccuracyMetric(Metric):
     def __init__(self, threshold, name):
         super().__init__(name=name)
