@@ -17,6 +17,8 @@ class Dataset(torch.utils.data.Dataset):
 
     def cache(self):
         self.images = {path: Image.open(Path(path)) for path in self.paths}
+        for img in self.images.values():
+            img.load()
 
     def __len__(self):
         return len(self.paths)
@@ -67,6 +69,8 @@ class IterableDataset(torch.utils.data.IterableDataset):
 
     def cache(self):
         self.images = {path: Image.open(Path(path)) for path in self.paths}
+        for img in self.images.values():
+            img.load()
 
     def __len__(self):
         return len(self.paths)
