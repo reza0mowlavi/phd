@@ -42,7 +42,7 @@ class MeanMetric(Metric):
         self.count = 0
 
 
-class Accuracy(Metric):
+class AccuracyMetric(Metric):
     def __init__(self, name="acc"):
         super().__init__(name=name)
         self.count = 0
